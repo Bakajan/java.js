@@ -16,7 +16,7 @@ function MenuItem(label)
 	this.dropId;
 	this.dropBorder = "1px gray solid";
 	this.showFlag = false;
-	this.width;
+	this.Parentwidth;
 	
 	this.add = function(object)
 	{
@@ -30,7 +30,8 @@ function MenuItem(label)
 		var dropMenu = document.createElement('div');
 		dropMenu.style.display = "none";
 		dropMenu.style.boxShadow = "0px 8px 16px 0px rgba(0,0,0,0.2)";
-		dropMenu.style.textAlign = "center";
+		dropMenu.style.border = "2px outset white";
+		dropMenu.style.marginLeft = "-5px";
 		con.innerHTML = this.label;
 		con.style.display = this.display;
 		con.style.padding = this.padding;
@@ -64,38 +65,54 @@ function MenuItem(label)
 			{
 				con.addEventListener('mouseout', function() { this.border = "none";
 											if(document.getElementById(this.id) != null)
-											document.getElementById(this.id).style.outline = this.border; }
+											document.getElementById(this.id).style.outline = this.border;}
 											, false);
 			}
 			if(this.mouseClickListener != null)
 				con.addEventListener('click', this.mouseClickListener, false);
 			else
 			{
-				con.addEventListener('click', function() { 
-															if(document.getElementById(dropMenu.id) != null)
-															{
-																if(!this.showFlag)
-																{
-																	document.getElementById(dropMenu.id).style.display = "block";
-																	var el = document.getElementById("item");
-																	var par = document.getElementById(this.id);
-																	document.getElementById(dropMenu.id).style.height = el.clientHeight*2;
-																	document.getElementById(dropMenu.id).style.width = par.clientWidth;
-																	document.getElementById(dropMenu.id).style.paddingLeft = "5";
-																	document.getElementById(dropMenu.id).style.zindex = "2";
-																	document.getElementById(dropMenu.id).style.background = "linear-gradient(lightgray, white)";
-																	document.getElementById(this.id).style.height = "20px";
-																	document.getElementById(this.id).style.width = 47;
-																	this.showFlag = true;
-																}
-																else
-																{
-																	document.getElementById(dropMenu.id).style.display = "none"; 
-																	this.showFlag = false;
-																}
-															}
-														 }
-											, false);
+				con.addEventListener('click', 
+				function() 
+				{ 
+					if(document.getElementById(dropMenu.id) != null)
+					{
+						if(!this.showFlag)
+						{
+							var width = document.getElementById(this.id);
+							document.getElementById(this.id).style.zindex = "2";
+							
+							var el = document.getElementById(dropMenu.id).childNodes[0];
+							var wid;
+							for(var i =0; i != document.getElementById(dropMenu.id).childNodes.length; i++)
+							{
+								if(document.getElementById(dropMenu.id).childNodes[i].clientWidth > wid)
+									wid = document.getElementById(dropMenu.id).childNodes[i].clientWidth + 10;
+								document.getElementById(dropMenu.id).childNodes[i].style.marginLeft = "5";
+								document.getElementById(dropMenu.id).childNodes[i].style.textAlign = "left";
+							}
+							
+							document.getElementById(dropMenu.id).style.position = "absolute";
+							document.getElementById(dropMenu.id).style.display = "block";
+							document.getElementById(dropMenu.id).style.height = el.clientHeight* (document.getElementById(dropMenu.id).childNodes.length *2);
+							if(el.clientWidth > wid)
+								document.getElementById(dropMenu.id).style.width = el.clientWidth + 100;
+							else
+								document.getElementById(dropMenu.id).style.width = wid + 100;
+							document.getElementById(dropMenu.id).style.paddingRight = "10px";
+							document.getElementById(dropMenu.id).style.zindex = "1";
+							document.getElementById(dropMenu.id).style.background = "linear-gradient(lightgray, white)";
+							
+							this.showFlag = true;
+						}
+						else
+						{
+							document.getElementById(dropMenu.id).style.display = "none"; 
+							this.showFlag = false;
+						}
+					}
+				 }
+				, false);
 			}
 				
 			document.getElementById(parent).appendChild(con);
@@ -108,12 +125,11 @@ function MenuItem(label)
 			{
 				for(var i = 0; i!= this.children.length; i++)
 				{
-					this.children[i].addSelfTo(this.dropId, i);
+					this.children[i].addSelfTo(this.dropId, this.dropId + i);
 				}
 			}
 			
 			this.width = document.getElementById(this.id).clientWidth;
-			console.log(this.width);
 		}
 	}
 	
@@ -159,8 +175,7 @@ function MenuItem(label)
 	{
 		this.color = color;
 		if(document.getElementById(this.id) != null)
-			document.getElementById(this.id).style.color = this.color;
-alert(color);		
+			document.getElementById(this.id).style.color = this.color;		
 	}
 	
 	this.setOutline = function(border)
