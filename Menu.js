@@ -12,15 +12,18 @@ function Menu(label)
 		//con.style.display = "none";
 		con.style.position = "relative";
 		con.style.display = "block";
-		con.style.zindex = 1;
+		con.style.zindex = 99;
 		con.style.cursor = "pointer";
-		this.backgroundColor;
-		this.textColor;
+		this.backgroundColor = "";
+		this.hoverBackgroundColor = "blue";
+		this.textColor = "black";
+		this.hoverTextColor = "white";
 		
 		if(document.getElementById(parent) != null)
 		{
 			this.id = this.id + "_" + id;
-			con.id = this.id
+			con.id = this.id;
+			con.style.color = this.textColor;
 			document.getElementById(parent).appendChild(con);
 			
 			if(this.mouseOverListener != null)
@@ -31,15 +34,14 @@ function Menu(label)
 				function() 
 				{ 
 					var el = document.getElementById(this.id);
-					console.log("On " + el.id);
 					if(el === event.target)
 					{
-						this.backgroundColor = "blue";
-						this.textColor = "white";
+						this.hoverBackgroundColor = "blue";
+						this.hoverTextColor = "white";
 						if(document.getElementById(this.id) != null)
 						{
-							document.getElementById(this.id).style.backgroundColor = this.backgroundColor; 
-							document.getElementById(this.id).style.color = this.textColor;
+							document.getElementById(this.id).style.backgroundColor = this.hoverBackgroundColor; 
+							document.getElementById(this.id).style.color = this.hoverTextColor;
 						}
 					}
 				}, false);
@@ -69,6 +71,31 @@ function Menu(label)
 				con.addEventListener('click', this.mouseClickListener, false);
 		}
 		
+		this.getHoverBackgroundColor = function()
+		{
+			if(document.getElementById(this.id) != null)
+			{
+				return this.hoverBackgroundColor;
+			}
+		}
+		
+		this.setHoverBackgroundColor = function(color)
+		{
+			console.log("0: " + color);
+			if(document.getElementById(this.id) != null)
+			{
+				this.hoverBackgroundColor = color;
+				var updateHover = function() 
+				{ 
+					document.getElementById(this.id).style.backgroundColor = color; 
+					document.getElementById(this.id).style.color = this.hoverTextColor; 
+				};
+				
+				var el = document.getElementById(this.id);
+				el.addEventListener('mouseover', updateHover, true);
+			}
+		}
+		
 		/*
 		if(this.children > 0)
 		{
@@ -78,5 +105,14 @@ function Menu(label)
 			}
 		}
 		*/
+	}
+	this.addmouseClickListener = function(toDo)
+	{
+		this.mouseClickListener = toDo;
+		if(document.getElementById(this.id) != null)
+		{
+			var element = document.getElementById(this.id);
+			element.addEventListener('click', toDo);
+		}
 	}
 }
