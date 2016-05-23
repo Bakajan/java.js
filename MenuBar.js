@@ -19,12 +19,10 @@ function MenuBar()
 		
 		if(document.getElementById(parent) != null)
 		{
-		  document.getElementById(parent).appendChild(con);
+			document.getElementById(parent).appendChild(con);
 
-		  for(var i = 0; i!= this.children.length; i++)
-		  {
-			  this.children[i].addSelfTo(this.id, i);
-		  }
+			for(var i = 0; i!= this.children.length; i++)
+				this.children[i].addSelfTo(this.id, i);
 		}
 	}
 	
