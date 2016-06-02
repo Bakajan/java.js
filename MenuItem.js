@@ -26,8 +26,7 @@ function MenuItem(label)
 	this.dropBackground = "linear-gradient(lightgray, white)";
 	this.showFlag = false;
 	this.Parentwidth;
-	this.test = function() { alert("fff"); };
-	
+
 	this.add = function(object)
 	{
 		this.children.push(object);
@@ -104,39 +103,33 @@ function MenuItem(label)
 			{
 				var overColor = this.mouseOverBackground;
 				var overTextColor = this.overTextColor;
-				con.addEventListener('mouseover', 
+				con.addEventListener('mouseenter', 
 				function() 
 				{ 
-					var el = document.getElementById(this.id);
-					if(el === event.target)
+					this.border = this.mouseOverBorder;
+					if(document.getElementById(this.id) != null)
 					{
-						this.border = this.mouseOverBorder;
-						if(document.getElementById(this.id) != null)
-						{
-							document.getElementById(this.id).style.outline = this.border; 
-							document.getElementById(this.id).style.background = overColor; 
-							document.getElementById(this.id).style.color = overTextColor; 
-						}
+						document.getElementById(this.id).style.outline = this.border; 
+						document.getElementById(this.id).style.background = overColor; 
+						document.getElementById(this.id).style.color = overTextColor; 
 					}
 				}, false);
 			}
 			if(this.mouseOutListener != null)
-				con.addEventListener('mouseout', this.mouseOutListener, false);
+				con.addEventListener('mouseleave', this.mouseOutListener, false);
 			else
 			{
 				var outColor = this.mouseOutBackground;
 				var textColor = this.textColor;
 				this.border = this.mouseOutBorder;
-				con.addEventListener('mouseout', 
+				con.addEventListener('mouseleave', 
 				function() 
 				{ 
-					if(document.getElementById(this.id) != null)
-					{
-						document.getElementById(this.id).style.outline = this.border;
-						document.getElementById(this.id).style.background = outColor;
-						document.getElementById(this.id).style.color = textColor;
-					}
-					
+					document.getElementById(this.id).style.outline = this.border;
+					document.getElementById(this.id).style.background = outColor;
+					document.getElementById(this.id).style.color = textColor;
+					document.getElementById(dropMenu.id).style.display = "none"; 
+					this.showFlag = false;				
 				}
 				, false);
 			}
