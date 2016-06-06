@@ -10,6 +10,8 @@ function Frame(parent)
 	var con = document.createElement('div');
 	con.id = this.id;
 	con.style.background = this.color;
+	//con.style.width = this.width;
+	//con.style.height = this.height;
 	
 	document.getElementById(parent).appendChild(con);
 	
